@@ -15,7 +15,7 @@ async fn post_chat(req: Request) -> Response {
     match req {
         Request::Post(body) => {
             let mut chat: Chat = serde_json::from_str(&body)
-                .map_err(|e| StatusCode::BAD_REQUEST)?;
+                .map_err(|_| StatusCode::BAD_REQUEST)?;
             
             chat.messages.push("How does that make you feel?".to_string());
             
