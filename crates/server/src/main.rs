@@ -25,9 +25,7 @@ async fn post_chat(req: Request) -> Response {
 
             Ok(Content::Json(chat_str))
         }
-        _ => {
-            Err(StatusCode::BAD_REQUEST)
-        }
+        _ => Err(StatusCode::BAD_REQUEST),
     }
 }
 
