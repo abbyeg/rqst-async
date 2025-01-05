@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 struct Chat {
-    messages: Vec<String>
+    messages: Vec<String>,
 }
 
 async fn index(_req: Request) -> Response {
@@ -14,21 +14,21 @@ async fn index(_req: Request) -> Response {
 async fn post_chat(req: Request) -> Response {
     match req {
         Request::Post(body) => {
-            let mut chat: Chat = serde_json::from_str(&body)
-                .map_err(|_| StatusCode::BAD_REQUEST)?;
-            
-            chat.messages.push("How does that make you feel?".to_string());
-            
-            let chat_str = serde_json::to_string(&chat)
-                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            let mut chat: Chat =
+                serde_json::from_str(&body).map_err(|_| StatusCode::BAD_REQUEST)?;
 
-            return Ok(Content::Json(chat_str))
-        },
+            chat.messages
+                .push("How does that make you feel?".to_string());
+
+            let chat_str =
+                serde_json::to_string(&chat).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+            Ok(Content::Json(chat_str))
+        }
         _ => {
-            return Err(StatusCode::BAD_REQUEST);
+            Err(StatusCode::BAD_REQUEST)
         }
     }
-    
 }
 
 #[tokio::main]
@@ -36,5 +36,6 @@ async fn main() {
     miniserve::Server::new()
         .route("/", index)
         .route("/chat", post_chat)
-        .run().await
+        .run()
+        .await
 }
