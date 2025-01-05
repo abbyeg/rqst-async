@@ -19,6 +19,7 @@ pub async fn gen_random_number() -> usize {
 }
 
 /// A chatbot that responds to inputs.
+#[derive(Debug)]
 pub struct Chatbot {
     emojis: Vec<String>,
     emoji_counter: usize,
